@@ -73,3 +73,14 @@ FROM number_data_types;
 
 SELECT CAST(char_column AS integer) FROM char_data_types;
 
+
+-- Try It Yourself:
+-- 1.
+Question:Your company delivers fruit and vegetables to local grocery stores, and you need to track the mileage driven by each driver each day to a tenth of a mile. Assuming no driver would ever travel more than 999 miles in a day, what would be an appropriate data type for the mileage column in your table? Why?
+Answer: The appropriate data type for the mileage column would be NUMERIC(5,1).
+-- 2.
+Question: In the table listing each driver in your company, what are appropriate data types for the drivers’ first and last names? Why is it a good idea to separate first and last names into two columns rather than having one larger name column?
+Answer: The appropriate data type for both the first and last names would be VARCHAR.
+-- 3.
+Question: Assume you have a text column that includes strings formatted as dates. One of the strings is written as '4//2017'. What will happen when you try to convert that string to the timestamp data type?
+Answer: When you try to convert the string '4//2017' to the timestamp data type, you will encounter an error.

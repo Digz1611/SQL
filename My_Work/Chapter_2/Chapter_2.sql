@@ -90,3 +90,22 @@ SELECT first_name, last_name, school, hire_date, salary
 FROM teachers
 WHERE school LIKE '%Roos%'
 ORDER BY hire_date DESC;
+
+
+
+-- Try It Yourself:
+-- 1.
+SELECT school, first_name, last_name
+FROM teachers
+ORDER BY school ASC, last_name ASC;
+-- 2.
+SELECT first_name, last_name, salary
+FROM teachers
+WHERE first_name LIKE 'S%' AND salary > 40000
+LIMIT 1;
+-- 3.
+SELECT first_name, last_name, hire_date, salary,
+RANK() OVER (ORDER BY salary DESC) AS salary_rank
+FROM teachers
+WHERE hire_date >= '2010-01-01'
+ORDER BY salary DESC;
