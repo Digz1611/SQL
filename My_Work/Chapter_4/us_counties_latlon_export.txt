@@ -1,0 +1,1 @@
+geo_name|internal_point_lat|internal_point_lon

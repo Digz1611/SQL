@@ -1,9 +1,4 @@
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
--- by Anthony DeBarros
-
 -- Chapter 5 Code Examples
---------------------------------------------------------------
 
 -- Listing 5-1: Basic addition, subtraction and multiplication with SQL
 SELECT 2 + 2;    -- addition

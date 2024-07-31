@@ -1,22 +1,12 @@
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
--- by Anthony DeBarros
-
--- Chapter 4 Code Examples
---------------------------------------------------------------
+-- Chapter 4 
 
 -- Listing 4-1: Using COPY for data import
--- This is example syntax only; running it will produce an error
-
 COPY table_name
-FROM 'C:\Code College\Java_Bootcamp\SQL\My_Work\Chapter_04'
+FROM 'C:\Code_College\Java_Bootcamp\SQL\My_Work\Chapter_04\us_counties_2010.csv'
 WITH (FORMAT CSV, HEADER);
 
 
 -- Listing 4-2: A CREATE TABLE statement for Census county data
--- Full data dictionary available at: http://www.census.gov/prod/cen2010/doc/pl94-171.pdf
--- Note: Some columns have been given more descriptive names
-
 CREATE TABLE us_counties_2010 (
     geo_name varchar(90),                    -- Name of the geography
     state_us_abbreviation varchar(2),        -- State/U.S. abbreviation
@@ -26,7 +16,7 @@ CREATE TABLE us_counties_2010 (
     state_fips varchar(2),                   -- State FIPS code
     county_fips varchar(3),                  -- County code
     area_land bigint,                        -- Area (Land) in square meters
-    area_water bigint,                        -- Area (Water) in square meters
+    area_water bigint,                       -- Area (Water) in square meters
     population_count_100_percent integer,    -- Population count (100%)
     housing_unit_count_100_percent integer,  -- Housing Unit count (100%)
     internal_point_lat numeric(10,7),        -- Internal point (latitude)
@@ -122,15 +112,15 @@ CREATE TABLE us_counties_2010 (
     h0010003 integer    -- Vacant
 );
 
+
+DROP table us_counties_2010;
+
+
 SELECT * FROM us_counties_2010;
 
 -- Listing 4-3: Importing Census data using COPY
--- Note! If you run into an import error here, be sure you downloaded the code and
--- data for the book according to the steps listed on page xxvii in the Introduction.
--- Windows users: Please check the Note on page xxvii as well.
-
 COPY us_counties_2010
-FROM 'C:\YourDirectory\us_counties_2010.csv'
+FROM 'C:\Code_College\Java_Bootcamp\SQL\My_Work\Chapter_4\us_counties_2010.csv'
 WITH (FORMAT CSV, HEADER);
 
 -- Checking the data
@@ -149,7 +139,6 @@ LIMIT 5;
 
 
 -- Listing 4-4: Creating a table to track supervisor salaries
-
 CREATE TABLE supervisor_salaries (
     town varchar(30),
     county varchar(30),
@@ -160,7 +149,6 @@ CREATE TABLE supervisor_salaries (
 );
 
 -- Listing 4-5: Importing salaries data from CSV to three table columns
-
 COPY supervisor_salaries (town, supervisor, salary)
 FROM 'C:\YourDirectory\supervisor_salaries.csv'
 WITH (FORMAT CSV, HEADER);
@@ -169,14 +157,12 @@ WITH (FORMAT CSV, HEADER);
 SELECT * FROM supervisor_salaries LIMIT 2;
 
 -- Listing 4-6 Use a temporary table to add a default value to a column during
--- import
-
 DELETE FROM supervisor_salaries;
 
 CREATE TEMPORARY TABLE supervisor_salaries_temp (LIKE supervisor_salaries);
 
 COPY supervisor_salaries_temp (town, supervisor, salary)
-FROM 'C:\YourDirectory\supervisor_salaries.csv'
+FROM 'C:\Code_College\Java_Bootcamp\SQL\My_Work\Chapter_4\supervisor_salaries.csv'
 WITH (FORMAT CSV, HEADER);
 
 INSERT INTO supervisor_salaries (town, county, supervisor, salary)
@@ -186,27 +172,24 @@ FROM supervisor_salaries_temp;
 DROP TABLE supervisor_salaries_temp;
 
 -- Check the data
-SELECT * FROM supervisor_salaries LIMIT 2;
+SELECT * FROM supervisor_salaries;
 
 -- Listing 4-7: Export an entire table with COPY
-
 COPY us_counties_2010
 TO 'C:\YourDirectory\us_counties_export.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
 
 
 -- Listing 4-8: Exporting selected columns from a table with COPY
-
 COPY us_counties_2010 (geo_name, internal_point_lat, internal_point_lon)
-TO 'C:\YourDirectory\us_counties_latlon_export.txt'
+TO 'C:\Code_College\Java_Bootcamp\SQL\My_Work\Chapter_4\us_counties_latlon_export.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
 
 -- Listing 4-9: Exporting query results with COPY
-
 COPY (
     SELECT geo_name, state_us_abbreviation
     FROM us_counties_2010
     WHERE geo_name ILIKE '%mill%'
-     )
-TO 'C:\YourDirectory\us_counties_mill_export.txt'
+    )
+TO 'C:\Code_College\Java_Bootcamp\SQL\My_Work\Chapter_4\us_counties_mill_export.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
