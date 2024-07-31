@@ -95,6 +95,7 @@ SELECT department,
 FROM percent_change;
 
 
+
 -- Listing 5-9: Using sum() and avg() aggregate functions
 SELECT sum(p0010001) AS "County Sum",
        round(avg(p0010001), 0) AS "County Average"
@@ -115,7 +116,7 @@ SELECT
     percentile_disc(.5)
     WITHIN GROUP (ORDER BY numbers)
 FROM percentile_test;
-
+ 
 
 -- Listing 5-11: Using sum(), avg(), and percentile_cont() aggregate functions
 SELECT sum(p0010001) AS "County Sum",
