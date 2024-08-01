@@ -174,7 +174,7 @@ CREATE TABLE us_counties_2000 (
 );
 
 COPY us_counties_2000
-FROM 'C:\YourDirectory\us_counties_2000.csv'
+FROM 'C:\Code_College\Java_Bootcamp\SQL\My_Work\Chapter_6\us_counties_2000.csv'
 WITH (FORMAT CSV, HEADER);
 
 SELECT c2010.geo_name,
