@@ -1,130 +1,119 @@
 -- Project-1
 
---Create the Department table
-CREATE TABLE Department (
+-- Create department Table
+CREATE TABLE department (
     depart_id SERIAL PRIMARY KEY,
     depart_name VARCHAR(100),
-    depart_city VARCHAR(100)
+	depart_city VARCHAR(100)
 );
 
--- Insert sample data into the Department table
-INSERT INTO Department (depart_name, depart_city) 
-VALUES 
-('HR', 'New York'), 
-('Engineering', 'San Francisco'),
-('Marketing', 'Chicago');
+-- Insert values into department Table
+INSERT INTO department (depart_name, depart_city) 
+VALUES  
+    ('IT','Pretoria'),
+    ('HR','Germany');
 
-SELECT * FROM Department;
-DROP TABLE Department;
+SELECT * FROM department;
 
 
--- Create the Roles table
-CREATE TABLE Roles (
+
+-- Create roles Table
+CREATE TABLE roles (
     role_id SERIAL PRIMARY KEY,
-    role VARCHAR(100)
+    role_title VARCHAR(100)
 );
 
---Insert sample data into the Roles table
-INSERT INTO Roles (role) 
+-- Insert values into roles Table
+INSERT INTO roles (role_title) 
 VALUES 
-('Manager'), 
-('Engineer'), 
-('Technician')
+    ('Software Engineer'),
+    ('Manager');
 
-SELECT * FROM Roles;
-DROP TABLE Roles;
+SELECT * FROM roles;
 
 
--- Create the Salaries table
-CREATE TABLE Salaries (
+
+-- Create salaries Table
+CREATE TABLE salaries (
     salary_id SERIAL PRIMARY KEY,
-    salary_pa NUMERIC(10, 2)
+    salary_pa NUMERIC(10, 2)	
 );
 
--- Insert sample data into the Salaries table
-INSERT INTO Salaries (salary_pa) 
-VALUES 
-(60000), 
-(80000), 
-(50000);
+-- Insert values into salary Table
+INSERT INTO salaries (salary_pa)
+VALUES  
+    (78000.00),
+    (40000.00);
 
-SELECT * FROM Salaries;
-DROP TABLE Salaries;
+SELECT * FROM salaries ;
 
 
--- Create the Overtime Hours table
-CREATE TABLE Overtime_Hours (
+
+-- Create overtime_hours Table
+CREATE TABLE overtime_hours (
     overtime_id SERIAL PRIMARY KEY,
-    overtime_hours INTEGER
+    overtime_hours INTEGER	
 );
 
--- Insert sample data into the Overtime Hours table
-INSERT INTO Overtime_Hours (overtime_hours) 
-VALUES 
-(10), 
-(15), 
-(20);
+-- Insert values into overtime_hours Table
+INSERT INTO overtime_hours (overtime_hours)
+VALUES  
+    (2),
+    (1);
 
-SELECT * FROM Overtime_Hours;
-DROP TABLE Overtime_Hours;
+SELECT * FROM overtime_hours;
 
 
--- Create the Employees table
-CREATE TABLE Employees (
-    emp_id SERIAL PRIMARY KEY,
+
+-- Create employees Table
+CREATE TABLE employees (
+    employee_id SERIAL PRIMARY KEY,
     first_name VARCHAR(100),
     surname VARCHAR(100),
-    gender VARCHAR(10),
-    address TEXT,
-    email VARCHAR(100) UNIQUE,
-    depart_id INTEGER REFERENCES Department(depart_id),
-    role_id INTEGER REFERENCES Roles(role_id),
-    salary_id INTEGER REFERENCES Salaries(salary_id),
-    overtime_id INTEGER REFERENCES Overtime_Hours(overtime_id)
+	gender VARCHAR(6),
+	address TEXT,
+	email VARCHAR(100) UNIQUE,
+    depart_id INTEGER REFERENCES department(depart_id),
+    role_id INTEGER REFERENCES roles(role_id),
+	salary_id INTEGER REFERENCES salaries(salary_id),
+	overtime_id INTEGER REFERENCES overtime_hours(overtime_id)
 );
 
--- Insert sample data into the Employees table
-INSERT INTO Employees (first_name, surname, gender, address, email, depart_id, role_id, salary_id, overtime_id) 
-VALUES 
-('John', 'Doe', 'Male', '123 Street', 'john.doe@example.com', 1, 1, 1, 1),
-('Jane', 'Smith', 'Female', '456 Avenue', 'jane.smith@example.com', 2, 2, 2, 2);
+-- Insert values into employees Table
+INSERT INTO employees (first_name, surname, gender, address, email, depart_id, role_id, salary_id, overtime_id)
+VALUES  
+    ('Diego', 'Langeveldt', 'Male', '141st street', 'digz@gmail.com', 1, 1, 1, 1),
+    ('Anna', 'Smith', 'Female', '7th street', 'anna@gmail.com', 2, 2, 2, 2);
 
-SELECT * FROM Employees;
-DROP TABLE Employees;
-
+SELECT * FROM employees;
 
 
 
--- Left Join Function 
+
+-- Join all the tables to show the person's info
 SELECT 
     e.first_name, 
     e.surname, 
-    d.depart_name, 
-    r.role, 
-    s.salary_pa, 
+	d.depart_name, 
+	r.role_title, 
+	s.salary_pa, 
     o.overtime_hours
-FROM 
-    Employees e
+FROM Employees e
 LEFT JOIN 
     Department d ON e.depart_id = d.depart_id
 LEFT JOIN 
-    Roles r ON e.role_id = r.role_id
+    roles r ON e.role_id = r.role_id
 LEFT JOIN 
-    Salaries s ON e.salary_id = s.salary_id
+    salaries s ON e.employee_id = s.salary_id
 LEFT JOIN 
-    Overtime_Hours o ON e.overtime_id = o.overtime_id;
+    overtime_hours o ON e.employee_id = o.overtime_id;
 
 
 
 
--- RUN or DROP any Table
-SELECT * FROM Department;
-DROP TABLE Department;
-SELECT * FROM Roles;
-DROP TABLE Roles;
-SELECT * FROM Salaries;
-DROP TABLE Salaries;
-SELECT * FROM Overtime_Hours;
-DROP TABLE Overtime_Hours;
-SELECT * FROM Employees;
-DROP TABLE Employees;
+-- DROP all Tables
+DROP TABLE IF EXISTS department CASCADE;
+DROP TABLE IF EXISTS roles CASCADE;
+DROP TABLE IF EXISTS salaries CASCADE;
+DROP TABLE IF EXISTS overtime_hours CASCADE;
+DROP TABLE IF EXISTS employees CASCADE;
