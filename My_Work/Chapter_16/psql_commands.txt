@@ -1,52 +1,57 @@
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
--- by Anthony DeBarros
+-- Chapter 16 
 
--- Chapter 16 Code Examples
---------------------------------------------------------------
-
-
--- Connecting psql to a database on a local server
-
+-- Connetcing psql to a database on a local server
+-- To connect to a PostgreSQL database from the command line using `psql`, use the following command:
+-- Replace [database name] with the name of your database and [username] with your PostgreSQL username.
 psql -d [database name] -U [username]
+
+-- Example: Connect to the 'analysis' database as the 'postgres' user
 psql -d analysis -U postgres
 
 -- Changing user and database name
-
+-- After connecting to a database, you can switch to another database or change the user using the \c command.
+-- Replace [database name] and [user name] with the desired database and username.
 \c [database name] [user name]
+
+-- Example: Switch to the 'gis_analysis' database as the 'postgres' user
 \c gis_analysis postgres
 
 -- Listing 16-1: Entering a single-line query in psql
 -- Enter this at the psql prompt:
-
+-- This query retrieves the first 3 county names from the 'us_counties_2010' table.
 SELECT geo_name FROM us_counties_2010 LIMIT 3;
 
 -- Listing 16-2: Entering a multi-line query in psql
 -- Type each line separately, followed by Enter
-
+-- This is the same query as above but entered in a multi-line format.
 SELECT geo_name
 FROM us_counties_2010
 LIMIT 3;
 
-
 -- Listing 16-3: Showing open parentheses in the psql prompt
-
+-- This command creates a table named 'wineries' with two columns: 'id' and 'winery_name'.
+-- The open parentheses in the CREATE TABLE statement will cause the psql prompt to 
+-- show continuation characters, indicating that the statement is not yet complete.
 CREATE TABLE wineries (
 id bigint,
 winery_name varchar(100)
 );
 
 -- Listing 16-4: A query with scrolling results
-
+-- This query selects all county names from the 'us_counties_2010' table.
+-- If the result set is large, it may require scrolling to view all the data in the terminal.
 SELECT geo_name FROM us_counties_2010;
 
 -- Listings 16-5 and 16-6: Normal and expanded displays of results
 -- Use \x to toggle expanded on/off
-
+-- The \x command toggles expanded display mode in psql, where the output is shown in a 
+-- vertical format rather than the default horizontal format. This can be helpful for tables 
+-- with many columns or large data values.
 SELECT * FROM grades;
 
 -- Listing 16-7: Importing data using \copy
-
+-- This example demonstrates how to import data from a CSV file into a PostgreSQL table using \copy.
+-- First, drop the table 'state_regions' if it already exists, then create a new table.
 DROP TABLE state_regions;
 
 CREATE TABLE state_regions (
@@ -54,35 +59,46 @@ CREATE TABLE state_regions (
     region varchar(20) NOT NULL
 );
 
-\copy state_regions FROM 'C:\Code_College\Java_Bootcamp\SQL\My_Work\Chapter_9\state_regions.csv' WITH (FORMAT CSV, HEADER);
+-- The \copy command is used to import data from a file. Replace 'C:\Code_College\Java_Bootcamp\SQL\My_Work\Chapter_16\query_output.csv' 
+-- with the actual path to your CSV file. The WITH clause specifies that the file is in CSV format 
+-- and contains a header row.
+\copy state_regions FROM 'C:\Code_College\Java_Bootcamp\SQL\My_Work\Chapter_16\query_output.csv' WITH (FORMAT CSV, HEADER);
 
 -- Listing 16-8: Saving query output to a file
-
 -- Enter psql settings
+-- The following commands set the output format to unaligned (\a), the field separator to a comma (\f ,), 
+-- and disable the display of the footer (\pset footer). These settings are ideal for exporting query results to a CSV file.
 \a \f , \pset footer
 
 -- This will be the query
+-- The query below selects all records from the 'grades' table. The results will be saved to a file.
 SELECT * FROM grades;
 
 -- Set psql to output results
--- Note that Windows users must suppply forward slashes for
--- this command, which is opposite of normal use.
-\o 'C:/Code_College/Java_Bootcamp/SQL/My_Work/Chapter_16/query_output.csv'
+-- The \o command directs query output to a specified file instead of the console. 
+-- Replace 'C:/YourDirectory/query_output.csv' with the desired output file path. 
+-- Windows users must use forward slashes in the file path.
+\o 'C:/YourDirectory/query_output.csv'
 
 -- Run the query and output
+-- After setting the output file with \o, run the query to save the results to the specified file.
 SELECT * FROM grades;
 
-
 -- createdb: Create a database named box_office
-
+-- The createdb command is used to create a new database. The -U option specifies the PostgreSQL user 
+-- and the -e option echoes the command that is sent to the server. In this case, it creates a database named 'box_office'.
 createdb -U postgres -e box_office
 
-
 -- Loading shapefiles into PostgreSQL
+-- Shapefiles contain geographic data and can be imported into PostgreSQL using the shp2pgsql  .
 
 -- For the US Census county shapefile in Chapter 14:
+-- This command loads the US Census county shapefile into a PostgreSQL table named 'us_counties_2010_shp'. 
+-- The -I option creates a spatial index, -s 4269 specifies the SRID, and -W Latin1 specifies the character encoding.
 shp2pgsql -I -s 4269 -W Latin1 tl_2010_us_county10.shp us_counties_2010_shp | psql -d gis_analysis -U postgres
 
--- For the Santa Fe roads and waterways shapfiles in Chapter 14:
+-- For the Santa Fe roads and waterways shapefiles in Chapter 14:
+-- These commands load the Santa Fe roads and waterways shapefiles into PostgreSQL tables named 'santafe_roads_2016' 
+-- and 'santafe_linearwater_2016', respectively. The options used are similar to the previous command.
 shp2pgsql -I -s 4269 tl_2016_35049_roads.shp santafe_roads_2016 | psql -d gis_analysis -U postgres
 shp2pgsql -I -s 4269 tl_2016_35049_linearwater.shp santafe_linearwater_2016 | psql -d gis_analysis -U postgres
